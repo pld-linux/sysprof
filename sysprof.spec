@@ -6,12 +6,12 @@
 %define	rel	1
 Summary:	Sampling CPU profiler for Linux
 Name:		sysprof
-Version:	1.0.9
+Version:	1.0.10
 Release:	%{rel}
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://www.daimi.au.dk/~sandmann/sysprof/%{name}-%{version}.tar.gz
-# Source0-md5:	3fdbce685f75fac650c8a03e3bafff57
+# Source0-md5:	7e70e7f3cc40608d61c1431361a25459
 URL:		http://www.daimi.au.dk/~sandmann/sysprof/
 BuildRequires:	binutils-devel
 BuildRequires:	gtk+2-devel
