@@ -72,6 +72,12 @@ cd module
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post -n kernel%{_alt_kernel}-sysprof
+%depmod %{_kernel_ver}
+
+%postun -n kernel%{_alt_kernel}-sysprof
+%depmod %{_kernel_ver}
+
 %if %{with userspace}
 %files
 %defattr(644,root,root,755)
