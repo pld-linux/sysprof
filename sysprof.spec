@@ -3,7 +3,7 @@
 %bcond_without  kernel          # don't build kernel modules
 %bcond_without  userspace       # don't build userspace tools
 #
-%define	rel	1
+%define	rel	2
 Summary:	Sampling CPU profiler for Linux
 Name:		sysprof
 Version:	1.0.12
@@ -18,6 +18,7 @@ BuildRequires:	gtk+2-devel
 BuildRequires:	rpmbuild(macros) >= 1.217
 Requires:	uname(release) >= 2.6
 Conflicts:	kernel < 2.6
+ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
