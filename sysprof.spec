@@ -11,7 +11,8 @@ URL:		http://www.daimi.au.dk/~sandmann/sysprof/
 BuildRequires:	binutils-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	rpmbuild(macros) >= 1.217
-Requires:	uname(release) >= 2.6.9
+Requires:	uname(release) >= 2.6.31
+ExclusiveArch:	%{ix86} x86_64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
