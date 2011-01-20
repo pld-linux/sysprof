@@ -1,4 +1,3 @@
-#
 Summary:	Sampling CPU profiler for Linux
 Name:		sysprof
 Version:	1.1.6
@@ -12,7 +11,7 @@ BuildRequires:	binutils-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	rpmbuild(macros) >= 1.217
 Requires:	uname(release) >= 2.6.31
-ExclusiveArch:	%{ix86} x86_64
+ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -32,7 +31,6 @@ Just insert the kernel module and start sysprof.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -42,7 +40,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README TODO
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/sysprof
+%attr(755,root,root) %{_bindir}/sysprof-cli
 %{_pixmapsdir}/*.png
 %{_datadir}/%{name}
 /etc/udev/rules.d/60-sysprof.rules
