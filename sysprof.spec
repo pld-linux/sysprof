@@ -1,12 +1,12 @@
 Summary:	Sampling CPU profiler for Linux
 Name:		sysprof
-Version:	1.1.8
+Version:	1.2.0
 Release:	1
 License:	GPL v2
 Group:		Applications/System
-Source0:	http://www.daimi.au.dk/~sandmann/sysprof/%{name}-%{version}.tar.gz
-# Source0-md5:	a46e24250988d96d8fc7b30773d55222
-URL:		http://www.daimi.au.dk/~sandmann/sysprof/
+Source0:	http://sysprof.com/%{name}-%{version}.tar.gz
+# Source0-md5:	a81808d847732f8dafb59d26ec2eebbf
+URL:		http://sysprof.com/
 BuildRequires:	binutils-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	rpmbuild(macros) >= 1.217
@@ -26,12 +26,14 @@ Just insert the kernel module and start sysprof.
 %setup -q
 
 %build
-%configure
+%configure \
+	--disable-silent-rules
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
+	udevdir=/lib/udev/rules.d \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
@@ -44,4 +46,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/sysprof-cli
 %{_pixmapsdir}/*.png
 %{_datadir}/%{name}
-/etc/udev/rules.d/60-sysprof.rules
+/lib/udev/rules.d/60-sysprof.rules
