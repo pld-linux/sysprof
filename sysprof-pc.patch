@@ -1,0 +1,20 @@
+--- sysprof-3.22.3/data/sysprof.pc.in.orig	2016-04-14 08:28:05.000000000 +0200
++++ sysprof-3.22.3/data/sysprof.pc.in	2016-12-26 17:43:14.556721159 +0100
+@@ -1,6 +1,6 @@
+ prefix=@prefix@
+ exec_prefix=${prefix}
+-libdir=${exec_prefix}/lib
++libdir=@libdir@
+ includedir=${exec_prefix}/include
+ 
+ Name: libsysprof-@API_VERSION@
+--- sysprof-3.22.3/data/sysprof-ui.pc.in.orig	2016-04-14 08:28:05.000000000 +0200
++++ sysprof-3.22.3/data/sysprof-ui.pc.in	2016-12-26 17:43:26.163387694 +0100
+@@ -1,6 +1,6 @@
+ prefix=@prefix@
+ exec_prefix=${prefix}
+-libdir=${exec_prefix}/lib
++libdir=@libdir@
+ includedir=${exec_prefix}/include
+ 
+ Name: libsysprof-ui-@API_VERSION@
