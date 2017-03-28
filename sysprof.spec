@@ -5,12 +5,12 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.22.3
+Version:	3.24.0
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.22/%{name}-%{version}.tar.xz
-# Source0-md5:	9514065dc752105240e5567c13708af4
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.24/%{name}-%{version}.tar.xz
+# Source0-md5:	a1efcfae5b4da15f2ac00571466835b5
 Patch0:		%{name}-pc.patch
 URL:		http://sysprof.com/
 # -std=gnu11 + C11 atomics
@@ -28,8 +28,8 @@ BuildRequires:	rpmbuild(macros) >= 1.644
 %{?with_sysprofd:BuildRequires:	systemd-devel >= 1:222}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	vala
-BuildRequires:	yelp-tools
 BuildRequires:	xz
+BuildRequires:	yelp-tools
 Requires:	%{name}-libs = %{version}-%{release}
 %{?with_sysprofd:Requires:	systemd-units >= 1:222}
 Requires:	uname(release) >= 2.6.31
@@ -242,6 +242,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/sysprof-2/sp-profiler.h
 %{_includedir}/sysprof-2/sp-selection.h
 %{_includedir}/sysprof-2/sp-source.h
+%{_includedir}/sysprof-2/sp-symbol-dirs.h
 %{_includedir}/sysprof-2/sp-symbol-resolver.h
 %{_includedir}/sysprof-2/sp-zoom-manager.h
 %{_includedir}/sysprof-2/sysprof.h
@@ -260,6 +261,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/org.gnome.Sysprof2.desktop
 %{_iconsdir}/hicolor/*x*/apps/sysprof.png
 %{_iconsdir}/hicolor/scalable/apps/sysprof-symbolic.svg
+%{_datadir}/appdata/org.gnome.Sysprof2.appdata.xml
 
 %files ui-libs
 %defattr(644,root,root,755)
