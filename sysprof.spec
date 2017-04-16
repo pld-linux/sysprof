@@ -5,12 +5,12 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.24.0
+Version:	3.24.1
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.24/%{name}-%{version}.tar.xz
-# Source0-md5:	a1efcfae5b4da15f2ac00571466835b5
+# Source0-md5:	2b44ae1d8cd899417294a9c4509d7870
 Patch0:		%{name}-pc.patch
 URL:		http://sysprof.com/
 # -std=gnu11 + C11 atomics
