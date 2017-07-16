@@ -1,18 +1,19 @@
 #
 # Conditional build:
-%bcond_with	sysprofd	# daemon to run UI without root permissions [requires systemd >= 222]
+%bcond_without	sysprofd	# daemon to run UI without root permissions
 #
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
 Version:	3.24.1
-Release:	1
+Release:	2
 License:	GPL v3+
 Group:		Applications/System
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.24/%{name}-%{version}.tar.xz
 # Source0-md5:	2b44ae1d8cd899417294a9c4509d7870
 Patch0:		%{name}-pc.patch
 URL:		http://sysprof.com/
+BuildRequires:	appstream-glib-devel
 # -std=gnu11 + C11 atomics
 BuildRequires:	gcc >= 6:4.9
 BuildRequires:	gdk-pixbuf2-devel >= 2.0
@@ -20,7 +21,7 @@ BuildRequires:	gettext-tools >= 0.19.6
 BuildRequires:	glib2-devel >= 1:2.44.0
 BuildRequires:	gobject-introspection-devel >= 1.42.0
 BuildRequires:	gtk+3-devel >= 3.22
-BuildRequires:	libstdc++-devel >= 6:4.0
+BuildRequires:	libstdc++-devel >= 6:4.3
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.22
 %{?with_sysprofd:BuildRequires:	polkit-devel}
@@ -153,7 +154,7 @@ Statyczna biblioteka sysprof-ui.
 %configure \
 	--disable-schemas-compile \
 	--disable-silent-rules \
-	%{?with_sysprofd:--with-sysprofd}
+	%{?with_sysprofd:--with-sysprofd=bundled}
 %{__make}
 
 %install
