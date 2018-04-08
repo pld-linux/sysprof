@@ -5,12 +5,12 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.24.1
-Release:	2
+Version:	3.28.0
+Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.24/%{name}-%{version}.tar.xz
-# Source0-md5:	2b44ae1d8cd899417294a9c4509d7870
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.28/%{name}-%{version}.tar.xz
+# Source0-md5:	bfe3043f1b00ecdb71c76e3c562cc7a4
 Patch0:		%{name}-pc.patch
 URL:		http://sysprof.com/
 BuildRequires:	appstream-glib-devel
@@ -77,18 +77,6 @@ Header files for sysprof library.
 %description devel -l pl.UTF-8
 Pliki nagłówkowe biblioteki sysprof.
 
-%package static
-Summary:	Static sysprof library
-Summary(pl.UTF-8):	Statyczna biblioteka sysprof
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-Static sysprof library.
-
-%description static -l pl.UTF-8
-Statyczna biblioteka sysprof.
-
 %package ui
 Summary:	The sysprof graphical user interface
 Summary(pl.UTF-8):	Graficzny interfejs użytkownika profilera sysprof
@@ -134,37 +122,20 @@ Header files for sysprof-ui library.
 %description ui-devel -l pl.UTF-8
 Pliki nagłówkowe biblioteki sysprof-ui.
 
-%package ui-static
-Summary:	Static sysprof-ui library
-Summary(pl.UTF-8):	Statyczna biblioteka sysprof-ui
-Group:		X11/Development/Libraries
-Requires:	%{name}-ui-devel = %{version}-%{release}
-
-%description ui-static
-Static sysprof-ui library.
-
-%description ui-static -l pl.UTF-8
-Statyczna biblioteka sysprof-ui.
-
 %prep
 %setup -q
 %patch0 -p1
 
 %build
-%configure \
-	--disable-schemas-compile \
-	--disable-silent-rules \
-	%{?with_sysprofd:--with-sysprofd=bundled}
-%{__make}
+%meson build \
+	%{?with_sysprofd:-Dwith_sysprofd=bundled}
+
+%meson_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
-
-# obsoleted by pkg-config
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libsysprof-*.la
+%meson_install -C build
 
 %find_lang %{name} -o %{name}-ui.lang --with-gnome --without-mo
 %find_lang %{name}
@@ -203,7 +174,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README TODO
+%doc AUTHORS NEWS README TODO
 %attr(755,root,root) %{_bindir}/sysprof-cli
 %if %{with sysprofd}
 %dir %{_libexecdir}/sysprof
@@ -220,39 +191,49 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%{_libdir}/libsysprof-capture-2.a
 %dir %{_includedir}/sysprof-2
+%{_includedir}/sysprof-2/sp-kallsyms.h
 %{_includedir}/sysprof-2/sp-address.h
-%{_includedir}/sysprof-2/sp-callgraph-profile.h
-%{_includedir}/sysprof-2/sp-capture-*.h
 %{_includedir}/sysprof-2/sp-clock.h
-%{_includedir}/sysprof-2/sp-elf-symbol-resolver.h
 %{_includedir}/sysprof-2/sp-error.h
-%{_includedir}/sysprof-2/sp-gjs-source.h
-%{_includedir}/sysprof-2/sp-hostinfo-source.h
-%{_includedir}/sysprof-2/sp-jitmap-symbol-resolver.h
-%{_includedir}/sysprof-2/sp-kernel-symbol.h
-%{_includedir}/sysprof-2/sp-kernel-symbol-resolver.h
-%{_includedir}/sysprof-2/sp-local-profiler.h
-%{_includedir}/sysprof-2/sp-map-lookaside.h
-%{_includedir}/sysprof-2/sp-model-filter.h
-%{_includedir}/sysprof-2/sp-perf-source.h
-%{_includedir}/sysprof-2/sp-proc-source.h
-%{_includedir}/sysprof-2/sp-process-model.h
-%{_includedir}/sysprof-2/sp-process-model-item.h
-%{_includedir}/sysprof-2/sp-profile.h
-%{_includedir}/sysprof-2/sp-profiler.h
-%{_includedir}/sysprof-2/sp-selection.h
-%{_includedir}/sysprof-2/sp-source.h
-%{_includedir}/sysprof-2/sp-symbol-dirs.h
-%{_includedir}/sysprof-2/sp-symbol-resolver.h
-%{_includedir}/sysprof-2/sp-zoom-manager.h
 %{_includedir}/sysprof-2/sysprof.h
+%{_includedir}/sysprof-2/sysprof-capture.h
 %{_includedir}/sysprof-2/sysprof-version.h
+%dir %{_includedir}/sysprof-2/callgraph
+%{_includedir}/sysprof-2/callgraph/sp-callgraph-profile.h
+%dir %{_includedir}/sysprof-2/capture
+%{_includedir}/sysprof-2/capture/sp-capture-condition.h
+%{_includedir}/sysprof-2/capture/sp-capture-cursor.h
+%{_includedir}/sysprof-2/capture/sp-capture-reader.h
+%{_includedir}/sysprof-2/capture/sp-capture-types.h
+%{_includedir}/sysprof-2/capture/sp-capture-writer.h
+%dir %{_includedir}/sysprof-2/profiler
+%{_includedir}/sysprof-2/profiler/sp-local-profiler.h
+%{_includedir}/sysprof-2/profiler/sp-profile.h
+%{_includedir}/sysprof-2/profiler/sp-profiler.h
+%dir %{_includedir}/sysprof-2/sources
+%{_includedir}/sysprof-2/sources/sp-gjs-source.h
+%{_includedir}/sysprof-2/sources/sp-hostinfo-source.h
+%{_includedir}/sysprof-2/sources/sp-perf-source.h
+%{_includedir}/sysprof-2/sources/sp-proc-source.h
+%{_includedir}/sysprof-2/sources/sp-source.h
+%dir %{_includedir}/sysprof-2/symbols
+%{_includedir}/sysprof-2/symbols/sp-elf-symbol-resolver.h
+%{_includedir}/sysprof-2/symbols/sp-jitmap-symbol-resolver.h
+%{_includedir}/sysprof-2/symbols/sp-kernel-symbol-resolver.h
+%{_includedir}/sysprof-2/symbols/sp-kernel-symbol.h
+%{_includedir}/sysprof-2/symbols/sp-symbol-dirs.h
+%{_includedir}/sysprof-2/symbols/sp-symbol-resolver.h
+%dir %{_includedir}/sysprof-2/util
+%{_includedir}/sysprof-2/util/sp-map-lookaside.h
+%{_includedir}/sysprof-2/util/sp-model-filter.h
+%{_includedir}/sysprof-2/util/sp-process-model-item.h
+%{_includedir}/sysprof-2/util/sp-process-model.h
+%{_includedir}/sysprof-2/util/sp-selection.h
+%{_includedir}/sysprof-2/util/sp-zoom-manager.h
 %{_pkgconfigdir}/sysprof-2.pc
-
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/libsysprof-2.a
+%{_pkgconfigdir}/sysprof-capture-2.pc
 
 %files ui -f %{name}-ui.lang
 %defattr(644,root,root,755)
@@ -262,7 +243,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/org.gnome.Sysprof2.desktop
 %{_iconsdir}/hicolor/*x*/apps/sysprof.png
 %{_iconsdir}/hicolor/scalable/apps/sysprof-symbolic.svg
-%{_datadir}/appdata/org.gnome.Sysprof2.appdata.xml
+%{_datadir}/metainfo/org.gnome.Sysprof2.appdata.xml
 
 %files ui-libs
 %defattr(644,root,root,755)
@@ -270,20 +251,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files ui-devel
 %defattr(644,root,root,755)
-%{_includedir}/sysprof-2/sp-callgraph-view.h
-%{_includedir}/sysprof-2/sp-cell-renderer-percent.h
-%{_includedir}/sysprof-2/sp-cpu-visualizer-row.h
-%{_includedir}/sysprof-2/sp-empty-state-view.h
-%{_includedir}/sysprof-2/sp-failed-state-view.h
-%{_includedir}/sysprof-2/sp-line-visualizer-row.h
-%{_includedir}/sysprof-2/sp-multi-paned.h
-%{_includedir}/sysprof-2/sp-process-model-row.h
-%{_includedir}/sysprof-2/sp-profiler-menu-button.h
-%{_includedir}/sysprof-2/sp-recording-state-view.h
-%{_includedir}/sysprof-2/sp-visualizer-*.h
 %{_includedir}/sysprof-2/sysprof-ui.h
 %{_pkgconfigdir}/sysprof-ui-2.pc
-
-%files ui-static
-%defattr(644,root,root,755)
-%{_libdir}/libsysprof-ui-2.a
+%{_includedir}/sysprof-2/callgraph/sp-callgraph-view.h
+%dir %{_includedir}/sysprof-2/visualizers
+%{_includedir}/sysprof-2/visualizers/sp-cpu-visualizer-row.h
+%{_includedir}/sysprof-2/visualizers/sp-line-visualizer-row.h
+%{_includedir}/sysprof-2/visualizers/sp-visualizer-row.h
+%{_includedir}/sysprof-2/visualizers/sp-visualizer-view.h
+%dir %{_includedir}/sysprof-2/widgets
+%{_includedir}/sysprof-2/widgets/sp-cell-renderer-percent.h
+%{_includedir}/sysprof-2/widgets/sp-empty-state-view.h
+%{_includedir}/sysprof-2/widgets/sp-failed-state-view.h
+%{_includedir}/sysprof-2/widgets/sp-multi-paned.h
+%{_includedir}/sysprof-2/widgets/sp-process-model-row.h
+%{_includedir}/sysprof-2/widgets/sp-profiler-menu-button.h
+%{_includedir}/sysprof-2/widgets/sp-recording-state-view.h
