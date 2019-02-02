@@ -5,13 +5,12 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.28.0
+Version:	3.30.2
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.28/%{name}-%{version}.tar.xz
-# Source0-md5:	bfe3043f1b00ecdb71c76e3c562cc7a4
-Patch0:		%{name}-pc.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.30/%{name}-%{version}.tar.xz
+# Source0-md5:	80cb47906eced2e7b9976bf00deec323
 URL:		http://sysprof.com/
 BuildRequires:	appstream-glib-devel
 # -std=gnu11 + C11 atomics
@@ -124,7 +123,6 @@ Pliki nagłówkowe biblioteki sysprof-ui.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %meson build \
@@ -174,7 +172,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS README TODO
+%doc AUTHORS NEWS TODO
 %attr(755,root,root) %{_bindir}/sysprof-cli
 %if %{with sysprofd}
 %dir %{_libexecdir}/sysprof
@@ -232,6 +230,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/sysprof-2/util/sp-process-model.h
 %{_includedir}/sysprof-2/util/sp-selection.h
 %{_includedir}/sysprof-2/util/sp-zoom-manager.h
+%dir %{_includedir}/sysprof-2/visualizers
+%{_includedir}/sysprof-2/visualizers/sp-mark-visualizer-row.h
 %{_pkgconfigdir}/sysprof-2.pc
 %{_pkgconfigdir}/sysprof-capture-2.pc
 
