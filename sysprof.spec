@@ -5,12 +5,12 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.30.2
-Release:	2
+Version:	3.32.0
+Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.30/%{name}-%{version}.tar.xz
-# Source0-md5:	80cb47906eced2e7b9976bf00deec323
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.32/%{name}-%{version}.tar.xz
+# Source0-md5:	d1fa9ad216419d722770ca36713ad3af
 URL:		http://sysprof.com/
 BuildRequires:	appstream-glib-devel
 # -std=gnu11 + C11 atomics
@@ -213,6 +213,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_includedir}/sysprof-2/sources
 %{_includedir}/sysprof-2/sources/sp-gjs-source.h
 %{_includedir}/sysprof-2/sources/sp-hostinfo-source.h
+%{_includedir}/sysprof-2/sources/sp-memory-source.h
 %{_includedir}/sysprof-2/sources/sp-perf-source.h
 %{_includedir}/sysprof-2/sources/sp-proc-source.h
 %{_includedir}/sysprof-2/sources/sp-source.h
@@ -241,8 +242,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/glib-2.0/schemas/org.gnome.sysprof2.gschema.xml
 %{_datadir}/mime/packages/sysprof-mime.xml
 %{_desktopdir}/org.gnome.Sysprof2.desktop
-%{_iconsdir}/hicolor/*x*/apps/sysprof.png
-%{_iconsdir}/hicolor/scalable/apps/sysprof-symbolic.svg
+%{_iconsdir}/hicolor/scalable/apps/org.gnome.Sysprof.svg
+%{_iconsdir}/hicolor/symbolic/apps/org.gnome.Sysprof-symbolic.svg
 %{_datadir}/metainfo/org.gnome.Sysprof2.appdata.xml
 
 %files ui-libs
