@@ -72,6 +72,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki sysprof
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2-devel >= 1:2.61.3
+Obsoletes:	sysprof-static < 3.28.0
 
 %description devel
 Header files for sysprof library.
@@ -118,6 +119,7 @@ Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-ui-libs = %{version}-%{release}
 Requires:	gtk+3-devel >= 3.22
+Obsoletes:	sysprof-ui-static < 3.28.0
 
 %description ui-devel
 Header files for sysprof-ui library.
