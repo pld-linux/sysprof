@@ -5,12 +5,13 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.34.1
+Version:	3.36.0
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.34/%{name}-%{version}.tar.xz
-# Source0-md5:	cc32455277b31afb1965d627ae3e3629
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.36/%{name}-%{version}.tar.xz
+# Source0-md5:	3956e82b8744715006dde59e0ce8910b
+Patch0:		%{name}-types.patch
 URL:		http://sysprof.com/
 # -std=gnu11 + C11 atomics
 BuildRequires:	gcc >= 6:4.9
@@ -25,7 +26,7 @@ BuildRequires:	meson >= 0.50.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.22
-%{?with_sysprofd:BuildRequires:	polkit-devel >= 0.105}
+%{?with_sysprofd:BuildRequires:	polkit-devel >= 0.114}
 BuildRequires:	rpmbuild(macros) >= 1.736
 %{?with_sysprofd:BuildRequires:	systemd-devel >= 1:222}
 BuildRequires:	tar >= 1:1.22
@@ -33,7 +34,7 @@ BuildRequires:	vala
 BuildRequires:	xz
 BuildRequires:	yelp-tools
 Requires:	%{name}-libs = %{version}-%{release}
-%{?with_sysprofd:Requires:	polkit >= 0.105}
+%{?with_sysprofd:Requires:	polkit >= 0.114}
 %{?with_sysprofd:Requires:	systemd-units >= 1:222}
 Requires:	uname(release) >= 2.6.31
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -129,6 +130,7 @@ Pliki nagłówkowe biblioteki sysprof-ui.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %meson build \
@@ -178,7 +180,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS TODO
+%doc AUTHORS DESIGN.md NEWS README.md
 %attr(755,root,root) %{_bindir}/sysprof-cli
 %if %{with sysprofd}
 %attr(755,root,root) %{_libexecdir}/sysprofd
@@ -194,6 +196,7 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libsysprof-3.so
+%attr(755,root,root) %{_libdir}/libsysprof-memory-3.so
 
 %files devel
 %defattr(644,root,root,755)
@@ -206,6 +209,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/sysprof-3/sysprof-capture*.h
 %{_includedir}/sysprof-3/sysprof-check.h
 %{_includedir}/sysprof-3/sysprof-clock.h
+%{_includedir}/sysprof-3/sysprof-collector.h
+%{_includedir}/sysprof-3/sysprof-control-source.h
 %{_includedir}/sysprof-3/sysprof-diskstat-source.h
 %{_includedir}/sysprof-3/sysprof-elf-symbol-resolver.h
 %{_includedir}/sysprof-3/sysprof-gjs-source.h
@@ -216,6 +221,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/sysprof-3/sysprof-kernel-symbol-resolver.h
 %{_includedir}/sysprof-3/sysprof-local-profiler.h
 %{_includedir}/sysprof-3/sysprof-memory-source.h
+%{_includedir}/sysprof-3/sysprof-memprof-profile.h
+%{_includedir}/sysprof-3/sysprof-memprof-source.h
 %{_includedir}/sysprof-3/sysprof-model-filter.h
 %{_includedir}/sysprof-3/sysprof-netdev-source.h
 %{_includedir}/sysprof-3/sysprof-perf-counter.h
@@ -248,7 +255,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/metainfo/org.gnome.Sysprof3.appdata.xml
 %{_datadir}/mime/packages/sysprof-mime.xml
 %{_desktopdir}/org.gnome.Sysprof3.desktop
-%{_iconsdir}/hicolor/scalable/actions/sysprof-trace-app.svg
+%{_iconsdir}/hicolor/scalable/actions/sysprof-*.svg
 %{_iconsdir}/hicolor/scalable/apps/org.gnome.Sysprof.svg
 %{_iconsdir}/hicolor/symbolic/apps/org.gnome.Sysprof-symbolic.svg
 
