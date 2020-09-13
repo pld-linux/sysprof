@@ -5,13 +5,12 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.36.0
+Version:	3.38.0
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.36/%{name}-%{version}.tar.xz
-# Source0-md5:	3956e82b8744715006dde59e0ce8910b
-Patch0:		%{name}-types.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.38/%{name}-%{version}.tar.xz
+# Source0-md5:	a1b8d744ff0cb60462121d98840a2133
 URL:		http://sysprof.com/
 # -std=gnu11 + C11 atomics
 BuildRequires:	gcc >= 6:4.9
@@ -22,7 +21,7 @@ BuildRequires:	gobject-introspection-devel >= 1.42.0
 BuildRequires:	gtk+3-devel >= 3.22
 BuildRequires:	libdazzle-devel >= 3.30.0
 BuildRequires:	libstdc++-devel >= 6:4.7
-BuildRequires:	meson >= 0.50.0
+BuildRequires:	meson >= 0.51.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.22
@@ -130,7 +129,6 @@ Pliki nagłówkowe biblioteki sysprof-ui.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %meson build \
@@ -195,55 +193,58 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libsysprof-3.so
-%attr(755,root,root) %{_libdir}/libsysprof-memory-3.so
+%attr(755,root,root) %{_libdir}/libsysprof-4.so
+%attr(755,root,root) %{_libdir}/libsysprof-memory-4.so
+%attr(755,root,root) %{_libdir}/libsysprof-speedtrack-4.so
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/libsysprof-capture-3.a
-%dir %{_includedir}/sysprof-3
-%{_includedir}/sysprof-3/sysprof.h
-%{_includedir}/sysprof-3/sysprof-address.h
-%{_includedir}/sysprof-3/sysprof-battery-source.h
-%{_includedir}/sysprof-3/sysprof-callgraph-profile.h
-%{_includedir}/sysprof-3/sysprof-capture*.h
-%{_includedir}/sysprof-3/sysprof-check.h
-%{_includedir}/sysprof-3/sysprof-clock.h
-%{_includedir}/sysprof-3/sysprof-collector.h
-%{_includedir}/sysprof-3/sysprof-control-source.h
-%{_includedir}/sysprof-3/sysprof-diskstat-source.h
-%{_includedir}/sysprof-3/sysprof-elf-symbol-resolver.h
-%{_includedir}/sysprof-3/sysprof-gjs-source.h
-%{_includedir}/sysprof-3/sysprof-governor-source.h
-%{_includedir}/sysprof-3/sysprof-hostinfo-source.h
-%{_includedir}/sysprof-3/sysprof-jitmap-symbol-resolver.h
-%{_includedir}/sysprof-3/sysprof-kernel-symbol.h
-%{_includedir}/sysprof-3/sysprof-kernel-symbol-resolver.h
-%{_includedir}/sysprof-3/sysprof-local-profiler.h
-%{_includedir}/sysprof-3/sysprof-memory-source.h
-%{_includedir}/sysprof-3/sysprof-memprof-profile.h
-%{_includedir}/sysprof-3/sysprof-memprof-source.h
-%{_includedir}/sysprof-3/sysprof-model-filter.h
-%{_includedir}/sysprof-3/sysprof-netdev-source.h
-%{_includedir}/sysprof-3/sysprof-perf-counter.h
-%{_includedir}/sysprof-3/sysprof-perf-source.h
-%{_includedir}/sysprof-3/sysprof-platform.h
-%{_includedir}/sysprof-3/sysprof-proc-source.h
-%{_includedir}/sysprof-3/sysprof-process-model.h
-%{_includedir}/sysprof-3/sysprof-process-model-item.h
-%{_includedir}/sysprof-3/sysprof-profile.h
-%{_includedir}/sysprof-3/sysprof-profiler.h
-%{_includedir}/sysprof-3/sysprof-proxy-source.h
-%{_includedir}/sysprof-3/sysprof-selection.h
-%{_includedir}/sysprof-3/sysprof-source.h
-%{_includedir}/sysprof-3/sysprof-spawnable.h
-%{_includedir}/sysprof-3/sysprof-symbol-resolver.h
-%{_includedir}/sysprof-3/sysprof-symbols-source.h
-%{_includedir}/sysprof-3/sysprof-tracefd-source.h
-%{_includedir}/sysprof-3/sysprof-version.h
-%{_includedir}/sysprof-3/sysprof-version-macros.h
-%{_pkgconfigdir}/sysprof-3.pc
-%{_pkgconfigdir}/sysprof-capture-3.pc
+%{_libdir}/libsysprof-capture-4.a
+%dir %{_includedir}/sysprof-4
+%{_includedir}/sysprof-4/sysprof.h
+%{_includedir}/sysprof-4/sysprof-address.h
+%{_includedir}/sysprof-4/sysprof-battery-source.h
+%{_includedir}/sysprof-4/sysprof-callgraph-profile.h
+%{_includedir}/sysprof-4/sysprof-capture*.h
+%{_includedir}/sysprof-4/sysprof-check.h
+%{_includedir}/sysprof-4/sysprof-clock.h
+%{_includedir}/sysprof-4/sysprof-collector.h
+%{_includedir}/sysprof-4/sysprof-control-source.h
+%{_includedir}/sysprof-4/sysprof-diskstat-source.h
+%{_includedir}/sysprof-4/sysprof-elf-symbol-resolver.h
+%{_includedir}/sysprof-4/sysprof-gjs-source.h
+%{_includedir}/sysprof-4/sysprof-governor-source.h
+%{_includedir}/sysprof-4/sysprof-hostinfo-source.h
+%{_includedir}/sysprof-4/sysprof-jitmap-symbol-resolver.h
+%{_includedir}/sysprof-4/sysprof-kernel-symbol.h
+%{_includedir}/sysprof-4/sysprof-kernel-symbol-resolver.h
+%{_includedir}/sysprof-4/sysprof-local-profiler.h
+%{_includedir}/sysprof-4/sysprof-macros.h
+%{_includedir}/sysprof-4/sysprof-memory-source.h
+%{_includedir}/sysprof-4/sysprof-memprof-profile.h
+%{_includedir}/sysprof-4/sysprof-memprof-source.h
+%{_includedir}/sysprof-4/sysprof-model-filter.h
+%{_includedir}/sysprof-4/sysprof-netdev-source.h
+%{_includedir}/sysprof-4/sysprof-perf-counter.h
+%{_includedir}/sysprof-4/sysprof-perf-source.h
+%{_includedir}/sysprof-4/sysprof-platform.h
+%{_includedir}/sysprof-4/sysprof-preload-source.h
+%{_includedir}/sysprof-4/sysprof-proc-source.h
+%{_includedir}/sysprof-4/sysprof-process-model.h
+%{_includedir}/sysprof-4/sysprof-process-model-item.h
+%{_includedir}/sysprof-4/sysprof-profile.h
+%{_includedir}/sysprof-4/sysprof-profiler.h
+%{_includedir}/sysprof-4/sysprof-proxy-source.h
+%{_includedir}/sysprof-4/sysprof-selection.h
+%{_includedir}/sysprof-4/sysprof-source.h
+%{_includedir}/sysprof-4/sysprof-spawnable.h
+%{_includedir}/sysprof-4/sysprof-symbol-resolver.h
+%{_includedir}/sysprof-4/sysprof-symbols-source.h
+%{_includedir}/sysprof-4/sysprof-tracefd-source.h
+%{_includedir}/sysprof-4/sysprof-version.h
+%{_includedir}/sysprof-4/sysprof-version-macros.h
+%{_pkgconfigdir}/sysprof-4.pc
+%{_pkgconfigdir}/sysprof-capture-4.pc
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof2.xml
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof3.Profiler.xml
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof3.Service.xml
@@ -261,16 +262,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files ui-libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libsysprof-ui-3.so
+%attr(755,root,root) %{_libdir}/libsysprof-ui-4.so
 
 %files ui-devel
 %defattr(644,root,root,755)
-%{_includedir}/sysprof-3/sysprof-display.h
-%{_includedir}/sysprof-3/sysprof-notebook.h
-%{_includedir}/sysprof-3/sysprof-page.h
-%{_includedir}/sysprof-3/sysprof-process-model-row.h
-%{_includedir}/sysprof-3/sysprof-ui.h
-%{_includedir}/sysprof-3/sysprof-visualizer.h
-%{_includedir}/sysprof-3/sysprof-visualizer-group.h
-%{_includedir}/sysprof-3/sysprof-zoom-manager.h
-%{_pkgconfigdir}/sysprof-ui-3.pc
+%{_includedir}/sysprof-4/sysprof-display.h
+%{_includedir}/sysprof-4/sysprof-notebook.h
+%{_includedir}/sysprof-4/sysprof-page.h
+%{_includedir}/sysprof-4/sysprof-process-model-row.h
+%{_includedir}/sysprof-4/sysprof-ui.h
+%{_includedir}/sysprof-4/sysprof-visualizer.h
+%{_includedir}/sysprof-4/sysprof-visualizer-group.h
+%{_includedir}/sysprof-4/sysprof-zoom-manager.h
+%{_pkgconfigdir}/sysprof-ui-4.pc
