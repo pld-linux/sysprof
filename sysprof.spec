@@ -5,18 +5,18 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.38.1
+Version:	3.40.1
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/sysprof/3.38/%{name}-%{version}.tar.xz
-# Source0-md5:	b4398e0cd3673cee95fdb3c70d4c5e77
+Source0:	https://download.gnome.org/sources/sysprof/3.40/%{name}-%{version}.tar.xz
+# Source0-md5:	05d1399cb3ab923b03603b10acd8d40e
 URL:		http://sysprof.com/
 # -std=gnu11 + C11 atomics
 BuildRequires:	gcc >= 6:4.9
 BuildRequires:	gdk-pixbuf2-devel >= 2.0
 BuildRequires:	gettext-tools >= 0.19.6
-BuildRequires:	glib2-devel >= 1:2.61.3
+BuildRequires:	glib2-devel >= 1:2.67.4
 BuildRequires:	gobject-introspection-devel >= 1.42.0
 BuildRequires:	gtk+3-devel >= 3.22
 BuildRequires:	libdazzle-devel >= 3.30.0
@@ -58,7 +58,7 @@ Wystarczy załadować moduł jądra i uruchomić sysprof.
 Summary:	The sysprof profiler library
 Summary(pl.UTF-8):	Biblioteka profilera sysprof
 Group:		Libraries
-Requires:	glib2 >= 1:2.61.3
+Requires:	glib2 >= 1:2.67.4
 
 %description libs
 The sysprof profiler library.
@@ -71,7 +71,7 @@ Summary:	Header files for sysprof library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki sysprof
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.61.3
+Requires:	glib2-devel >= 1:2.67.4
 Obsoletes:	sysprof-static < 3.28.0
 
 %description devel
@@ -85,7 +85,7 @@ Summary:	The sysprof graphical user interface
 Summary(pl.UTF-8):	Graficzny interfejs użytkownika profilera sysprof
 Group:		Applications/System
 Requires(post,postun):	desktop-file-utils
-Requires(post,postun):	glib2 >= 1:2.61.3
+Requires(post,postun):	glib2 >= 1:2.67.4
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name} = %{version}-%{release}
 Requires:	%{name}-ui-libs = %{version}-%{release}
