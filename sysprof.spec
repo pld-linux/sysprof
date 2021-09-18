@@ -12,6 +12,7 @@ Group:		Applications/System
 Source0:	https://download.gnome.org/sources/sysprof/3.40/%{name}-%{version}.tar.xz
 # Source0-md5:	05d1399cb3ab923b03603b10acd8d40e
 URL:		http://sysprof.com/
+BuildRequires:	cairo-devel
 # -std=gnu11 + C11 atomics
 BuildRequires:	gcc >= 6:4.9
 BuildRequires:	gdk-pixbuf2-devel >= 2.0
@@ -19,8 +20,10 @@ BuildRequires:	gettext-tools >= 0.19.6
 BuildRequires:	glib2-devel >= 1:2.67.4
 BuildRequires:	gobject-introspection-devel >= 1.42.0
 BuildRequires:	gtk+3-devel >= 3.22
+BuildRequires:	json-glib-devel
 BuildRequires:	libdazzle-devel >= 3.30.0
 BuildRequires:	libstdc++-devel >= 6:4.7
+BuildRequires:	libunwind-devel
 BuildRequires:	meson >= 0.51.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pango-devel
