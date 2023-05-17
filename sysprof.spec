@@ -1,3 +1,4 @@
+# TODO: switch to gtk4-update-icon-cache
 #
 # Conditional build:
 %bcond_without	sysprofd	# daemon to run UI without root permissions
@@ -5,26 +6,23 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.44.0
+Version:	3.46.0
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	https://download.gnome.org/sources/sysprof/3.44/%{name}-%{version}.tar.xz
-# Source0-md5:	e96168b2fa18462f40871513fe4228b5
+Source0:	https://download.gnome.org/sources/sysprof/3.46/%{name}-%{version}.tar.xz
+# Source0-md5:	af4e88af759419ad19b196d1166de485
 URL:		http://www.sysprof.com/
 BuildRequires:	cairo-devel
 # -std=gnu11 + C11 atomics
 BuildRequires:	gcc >= 6:4.9
-BuildRequires:	gdk-pixbuf2-devel >= 2.0
 BuildRequires:	gettext-tools >= 0.19.6
-BuildRequires:	glib2-devel >= 1:2.67.4
-BuildRequires:	gobject-introspection-devel >= 1.42.0
-BuildRequires:	gtk+3-devel >= 3.22
+BuildRequires:	glib2-devel >= 1:2.73.0
+BuildRequires:	gtk4-devel >= 4.6
 BuildRequires:	json-glib-devel
-BuildRequires:	libdazzle-devel >= 3.30.0
 BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libunwind-devel
-BuildRequires:	meson >= 0.51.0
+BuildRequires:	meson >= 0.59.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.22
@@ -32,7 +30,6 @@ BuildRequires:	pkgconfig >= 1:0.22
 BuildRequires:	rpmbuild(macros) >= 1.736
 %{?with_sysprofd:BuildRequires:	systemd-devel >= 1:222}
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	vala
 BuildRequires:	xz
 BuildRequires:	yelp-tools
 Requires:	%{name}-libs = %{version}-%{release}
@@ -61,7 +58,7 @@ Wystarczy załadować moduł jądra i uruchomić sysprof.
 Summary:	The sysprof profiler library
 Summary(pl.UTF-8):	Biblioteka profilera sysprof
 Group:		Libraries
-Requires:	glib2 >= 1:2.67.4
+Requires:	glib2 >= 1:2.73.0
 
 %description libs
 The sysprof profiler library.
@@ -74,7 +71,7 @@ Summary:	Header files for sysprof library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki sysprof
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.67.4
+Requires:	glib2-devel >= 1:2.73.0
 Obsoletes:	sysprof-static < 3.28.0
 
 %description devel
@@ -88,7 +85,7 @@ Summary:	The sysprof graphical user interface
 Summary(pl.UTF-8):	Graficzny interfejs użytkownika profilera sysprof
 Group:		Applications/System
 Requires(post,postun):	desktop-file-utils
-Requires(post,postun):	glib2 >= 1:2.67.4
+Requires(post,postun):	glib2 >= 1:2.73.0
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name} = %{version}-%{release}
 Requires:	%{name}-ui-libs = %{version}-%{release}
@@ -106,8 +103,7 @@ Summary:	The sysprof library containing reusable GTK+ widgets
 Summary(pl.UTF-8):	Biblioteka sysprofa zawierająca widgety GTK+ wielokrotnego użytku
 Group:		X11/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	gtk+3 >= 3.22
-Requires:	libdazzle >= 3.30.0
+Requires:	gtk4 >= 4.6
 
 %description ui-libs
 The sysprof library containing reusable GTK+ widgets.
@@ -121,7 +117,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki sysprof-ui
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-ui-libs = %{version}-%{release}
-Requires:	gtk+3-devel >= 3.22
+Requires:	gtk4-devel >= 4.6
 Obsoletes:	sysprof-ui-static < 3.28.0
 
 %description ui-devel
@@ -165,13 +161,11 @@ rm -rf $RPM_BUILD_ROOT
 %postun	libs -p /sbin/ldconfig
 
 %post ui
-%glib_compile_schemas
 %update_icon_cache hicolor
 %update_mime_database
 %update_desktop_database
 
 %postun ui
-%glib_compile_schemas
 %update_icon_cache hicolor
 %update_mime_database
 %update_desktop_database
@@ -182,6 +176,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS DESIGN.md NEWS README.md
+%attr(755,root,root) %{_bindir}/sysprof-agent
 %attr(755,root,root) %{_bindir}/sysprof-cli
 %if %{with sysprofd}
 %attr(755,root,root) %{_libexecdir}/sysprofd
@@ -203,51 +198,10 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %{_libdir}/libsysprof-capture-4.a
-%dir %{_includedir}/sysprof-4
-%{_includedir}/sysprof-4/sysprof.h
-%{_includedir}/sysprof-4/sysprof-address.h
-%{_includedir}/sysprof-4/sysprof-battery-source.h
-%{_includedir}/sysprof-4/sysprof-callgraph-profile.h
-%{_includedir}/sysprof-4/sysprof-capture*.h
-%{_includedir}/sysprof-4/sysprof-check.h
-%{_includedir}/sysprof-4/sysprof-clock.h
-%{_includedir}/sysprof-4/sysprof-collector.h
-%{_includedir}/sysprof-4/sysprof-control-source.h
-%{_includedir}/sysprof-4/sysprof-diskstat-source.h
-%{_includedir}/sysprof-4/sysprof-elf-symbol-resolver.h
-%{_includedir}/sysprof-4/sysprof-gjs-source.h
-%{_includedir}/sysprof-4/sysprof-governor-source.h
-%{_includedir}/sysprof-4/sysprof-hostinfo-source.h
-%{_includedir}/sysprof-4/sysprof-jitmap-symbol-resolver.h
-%{_includedir}/sysprof-4/sysprof-kernel-symbol.h
-%{_includedir}/sysprof-4/sysprof-kernel-symbol-resolver.h
-%{_includedir}/sysprof-4/sysprof-local-profiler.h
-%{_includedir}/sysprof-4/sysprof-macros.h
-%{_includedir}/sysprof-4/sysprof-memory-source.h
-%{_includedir}/sysprof-4/sysprof-memprof-profile.h
-%{_includedir}/sysprof-4/sysprof-memprof-source.h
-%{_includedir}/sysprof-4/sysprof-model-filter.h
-%{_includedir}/sysprof-4/sysprof-netdev-source.h
-%{_includedir}/sysprof-4/sysprof-perf-counter.h
-%{_includedir}/sysprof-4/sysprof-perf-source.h
-%{_includedir}/sysprof-4/sysprof-platform.h
-%{_includedir}/sysprof-4/sysprof-preload-source.h
-%{_includedir}/sysprof-4/sysprof-proc-source.h
-%{_includedir}/sysprof-4/sysprof-process-model.h
-%{_includedir}/sysprof-4/sysprof-process-model-item.h
-%{_includedir}/sysprof-4/sysprof-profile.h
-%{_includedir}/sysprof-4/sysprof-profiler.h
-%{_includedir}/sysprof-4/sysprof-proxy-source.h
-%{_includedir}/sysprof-4/sysprof-selection.h
-%{_includedir}/sysprof-4/sysprof-source.h
-%{_includedir}/sysprof-4/sysprof-spawnable.h
-%{_includedir}/sysprof-4/sysprof-symbol-resolver.h
-%{_includedir}/sysprof-4/sysprof-symbols-source.h
-%{_includedir}/sysprof-4/sysprof-tracefd-source.h
-%{_includedir}/sysprof-4/sysprof-version.h
-%{_includedir}/sysprof-4/sysprof-version-macros.h
+%{_includedir}/sysprof-4
 %{_pkgconfigdir}/sysprof-4.pc
 %{_pkgconfigdir}/sysprof-capture-4.pc
+%{_datadir}/dbus-1/interfaces/org.gnome.Sysprof.Agent.xml
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof2.xml
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof3.Profiler.xml
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof3.Service.xml
@@ -255,26 +209,18 @@ rm -rf $RPM_BUILD_ROOT
 %files ui -f %{name}-ui.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/sysprof
-%{_datadir}/glib-2.0/schemas/org.gnome.sysprof3.gschema.xml
-%{_datadir}/metainfo/org.gnome.Sysprof3.appdata.xml
+%{_datadir}/metainfo/org.gnome.Sysprof.appdata.xml
 %{_datadir}/mime/packages/sysprof-mime.xml
-%{_desktopdir}/org.gnome.Sysprof3.desktop
+%{_desktopdir}/org.gnome.Sysprof.desktop
 %{_iconsdir}/hicolor/scalable/actions/sysprof-*.svg
 %{_iconsdir}/hicolor/scalable/apps/org.gnome.Sysprof.svg
 %{_iconsdir}/hicolor/symbolic/apps/org.gnome.Sysprof-symbolic.svg
 
 %files ui-libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libsysprof-ui-4.so
+%attr(755,root,root) %{_libdir}/libsysprof-ui-5.so
 
 %files ui-devel
 %defattr(644,root,root,755)
-%{_includedir}/sysprof-4/sysprof-display.h
-%{_includedir}/sysprof-4/sysprof-notebook.h
-%{_includedir}/sysprof-4/sysprof-page.h
-%{_includedir}/sysprof-4/sysprof-process-model-row.h
-%{_includedir}/sysprof-4/sysprof-ui.h
-%{_includedir}/sysprof-4/sysprof-visualizer.h
-%{_includedir}/sysprof-4/sysprof-visualizer-group.h
-%{_includedir}/sysprof-4/sysprof-zoom-manager.h
-%{_pkgconfigdir}/sysprof-ui-4.pc
+%{_includedir}/sysprof-ui-5
+%{_pkgconfigdir}/sysprof-ui-5.pc
