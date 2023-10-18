@@ -20,6 +20,7 @@ BuildRequires:	gettext-tools >= 0.19.6
 BuildRequires:	glib2-devel >= 1:2.73.0
 BuildRequires:	gtk4-devel >= 4.6
 BuildRequires:	json-glib-devel
+BuildRequires:	libadwaita-devel >= 1.2
 BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libunwind-devel
 BuildRequires:	meson >= 0.59.0
