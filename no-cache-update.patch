@@ -1,0 +1,12 @@
+--- sysprof-3.48.0/meson.build.orig	2023-03-17 20:14:21.000000000 +0100
++++ sysprof-3.48.0/meson.build	2023-10-19 00:48:55.610128482 +0200
+@@ -252,7 +252,7 @@
+ 
+ if get_option('gtk') and gnome.found()
+   gnome.post_install(
+-      gtk_update_icon_cache: true,
+-    update_desktop_database: true
++      gtk_update_icon_cache: false,
++    update_desktop_database: false
+   )
+ endif

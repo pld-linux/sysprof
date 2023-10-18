@@ -12,6 +12,7 @@ License:	GPL v3+
 Group:		Applications/System
 Source0:	https://download.gnome.org/sources/sysprof/3.48/%{name}-%{version}.tar.xz
 # Source0-md5:	ee1556063c7b8d9abd414f451b04c33a
+Patch0:		no-cache-update.patch
 URL:		http://www.sysprof.com/
 BuildRequires:	cairo-devel
 # -std=gnu11 + C11 atomics
@@ -129,6 +130,7 @@ Pliki nagłówkowe biblioteki sysprof-ui.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %meson build \
