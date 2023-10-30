@@ -6,25 +6,26 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	3.48.0
+Version:	45.1
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	https://download.gnome.org/sources/sysprof/3.48/%{name}-%{version}.tar.xz
-# Source0-md5:	ee1556063c7b8d9abd414f451b04c33a
+Source0:	https://download.gnome.org/sources/sysprof/45/%{name}-%{version}.tar.xz
+# Source0-md5:	a06ccd30d1937948964d677430f529cc
 Patch0:		no-cache-update.patch
 URL:		http://www.sysprof.com/
 BuildRequires:	cairo-devel
 # -std=gnu11 + C11 atomics
 BuildRequires:	gcc >= 6:4.9
 BuildRequires:	gettext-tools >= 0.19.6
-BuildRequires:	glib2-devel >= 1:2.73.0
-BuildRequires:	gtk4-devel >= 4.6
+BuildRequires:	glib2-devel >= 1:2.76.0
+BuildRequires:	gtk4-devel >= 4.10
 BuildRequires:	json-glib-devel
 BuildRequires:	libadwaita-devel >= 1.2
-BuildRequires:	libstdc++-devel >= 6:4.7
+BuildRequires:	libdex-devel >= 0.3
+BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	libunwind-devel
-BuildRequires:	meson >= 0.59.0
+BuildRequires:	meson >= 0.62.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.22
@@ -60,7 +61,9 @@ Wystarczy załadować moduł jądra i uruchomić sysprof.
 Summary:	The sysprof profiler library
 Summary(pl.UTF-8):	Biblioteka profilera sysprof
 Group:		Libraries
-Requires:	glib2 >= 1:2.73.0
+Requires:	glib2 >= 1:2.76.0
+Requires:	libdex >= 0.3
+Obsoletes:	sysprof-ui-libs < 45
 
 %description libs
 The sysprof profiler library.
@@ -73,8 +76,13 @@ Summary:	Header files for sysprof library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki sysprof
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.73.0
+Requires:	glib2-devel >= 1:2.76.0
+Requires:	json-glib-devel
+Requires:	libdex-devel >= 0.3
+%{?with_sysprofd:Requires:	polkit-devel >= 0.114}
+%{?with_sysprofd:Requires:	systemd-devel >= 1:222}
 Obsoletes:	sysprof-static < 3.28.0
+Obsoletes:	sysprof-ui-devel < 45
 
 %description devel
 Header files for sysprof library.
@@ -87,10 +95,10 @@ Summary:	The sysprof graphical user interface
 Summary(pl.UTF-8):	Graficzny interfejs użytkownika profilera sysprof
 Group:		Applications/System
 Requires(post,postun):	desktop-file-utils
-Requires(post,postun):	glib2 >= 1:2.73.0
+Requires(post,postun):	glib2 >= 1:2.76.0
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name} = %{version}-%{release}
-Requires:	%{name}-ui-libs = %{version}-%{release}
+Requires:	gtk4 >= 4.10
 Requires:	hicolor-icon-theme
 Requires:	shared-mime-info
 
@@ -100,40 +108,13 @@ The sysprof graphical user interface.
 %description ui -l pl.UTF-8
 Graficzny interfejs użytkownika profilera sysprof.
 
-%package ui-libs
-Summary:	The sysprof library containing reusable GTK+ widgets
-Summary(pl.UTF-8):	Biblioteka sysprofa zawierająca widgety GTK+ wielokrotnego użytku
-Group:		X11/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
-Requires:	gtk4 >= 4.6
-
-%description ui-libs
-The sysprof library containing reusable GTK+ widgets.
-
-%description ui-libs -l pl.UTF-8
-Biblioteka sysprofa zawierająca widgety GTK+ wielokrotnego użytku.
-
-%package ui-devel
-Summary:	Header files for sysprof-ui library
-Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki sysprof-ui
-Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-Requires:	%{name}-ui-libs = %{version}-%{release}
-Requires:	gtk4-devel >= 4.6
-Obsoletes:	sysprof-ui-static < 3.28.0
-
-%description ui-devel
-Header files for sysprof-ui library.
-
-%description ui-devel -l pl.UTF-8
-Pliki nagłówkowe biblioteki sysprof-ui.
-
 %prep
 %setup -q
 %patch0 -p1
 
 %build
 %meson build \
+	--default-library=shared \
 	%{!?with_sysprofd:-Dwith_sysprofd=host}
 
 %ninja_build -C build
@@ -173,9 +154,6 @@ rm -rf $RPM_BUILD_ROOT
 %update_mime_database
 %update_desktop_database
 
-%post	ui-libs -p /sbin/ldconfig
-%postun	ui-libs -p /sbin/ldconfig
-
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS DESIGN.md NEWS README.md
@@ -183,29 +161,28 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/sysprof-cli
 %if %{with sysprofd}
 %attr(755,root,root) %{_libexecdir}/sysprofd
-%{systemdunitdir}/sysprof2.service
 %{systemdunitdir}/sysprof3.service
-%{_datadir}/dbus-1/system-services/org.gnome.Sysprof2.service
 %{_datadir}/dbus-1/system-services/org.gnome.Sysprof3.service
-%{_datadir}/dbus-1/system.d/org.gnome.Sysprof2.conf
 %{_datadir}/dbus-1/system.d/org.gnome.Sysprof3.conf
 %{_datadir}/polkit-1/actions/org.gnome.sysprof3.policy
 %endif
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libsysprof-4.so
-%attr(755,root,root) %{_libdir}/libsysprof-memory-4.so
-%attr(755,root,root) %{_libdir}/libsysprof-speedtrack-4.so
+%attr(755,root,root) %{_libdir}/libsysprof-6.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libsysprof-6.so.6
+%attr(755,root,root) %{_libdir}/libsysprof-memory-6.so
+%attr(755,root,root) %{_libdir}/libsysprof-speedtrack-6.so
+%attr(755,root,root) %{_libdir}/libsysprof-tracer-6.so
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libsysprof-6.so
 %{_libdir}/libsysprof-capture-4.a
-%{_includedir}/sysprof-4
-%{_pkgconfigdir}/sysprof-4.pc
+%{_includedir}/sysprof-6
+%{_pkgconfigdir}/sysprof-6.pc
 %{_pkgconfigdir}/sysprof-capture-4.pc
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof.Agent.xml
-%{_datadir}/dbus-1/interfaces/org.gnome.Sysprof2.xml
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof3.Profiler.xml
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof3.Service.xml
 
@@ -218,12 +195,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/scalable/actions/sysprof-*.svg
 %{_iconsdir}/hicolor/scalable/apps/org.gnome.Sysprof.svg
 %{_iconsdir}/hicolor/symbolic/apps/org.gnome.Sysprof-symbolic.svg
-
-%files ui-libs
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libsysprof-ui-5.so
-
-%files ui-devel
-%defattr(644,root,root,755)
-%{_includedir}/sysprof-ui-5
-%{_pkgconfigdir}/sysprof-ui-5.pc
