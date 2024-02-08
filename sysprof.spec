@@ -23,6 +23,7 @@ BuildRequires:	gtk4-devel >= 4.10
 BuildRequires:	json-glib-devel
 BuildRequires:	libadwaita-devel >= 1.2
 BuildRequires:	libdex-devel >= 0.3
+BuildRequires:	libpanel-devel >= 1.3.0
 BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	libunwind-devel
 BuildRequires:	meson >= 0.62.0
@@ -100,6 +101,7 @@ Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name} = %{version}-%{release}
 Requires:	gtk4 >= 4.10
 Requires:	hicolor-icon-theme
+Requires:	libpanel >= 1.3.0
 Requires:	shared-mime-info
 
 %description ui
