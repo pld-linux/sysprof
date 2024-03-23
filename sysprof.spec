@@ -6,17 +6,17 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	45.2
+Version:	46.0
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	https://download.gnome.org/sources/sysprof/45/%{name}-%{version}.tar.xz
-# Source0-md5:	6c77d06d8bde15e74e9b2aaf3ea6ef9a
+Source0:	https://download.gnome.org/sources/sysprof/46/%{name}-%{version}.tar.xz
+# Source0-md5:	89d564d00783585922a04c17c60f3794
 Patch0:		no-cache-update.patch
 URL:		http://www.sysprof.com/
 BuildRequires:	cairo-devel
-# -std=gnu11 + C11 atomics
-BuildRequires:	gcc >= 6:4.9
+# -std=gnu17
+BuildRequires:	gcc >= 6:7
 BuildRequires:	gettext-tools >= 0.19.6
 BuildRequires:	glib2-devel >= 1:2.76.0
 BuildRequires:	gtk4-devel >= 4.10
