@@ -30,7 +30,7 @@ BuildRequires:	meson >= 0.62.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.22
-%{?with_sysprofd:BuildRequires:	polkit-devel >= 0.114}
+BuildRequires:	polkit-devel >= 0.114
 BuildRequires:	rpmbuild(macros) >= 1.736
 %{?with_sysprofd:BuildRequires:	systemd-devel >= 1:222}
 BuildRequires:	tar >= 1:1.22
@@ -117,7 +117,7 @@ Graficzny interfejs użytkownika profilera sysprof.
 %build
 %meson build \
 	--default-library=shared \
-	%{!?with_sysprofd:-Dwith_sysprofd=host}
+	%{!?with_sysprofd:-Dsysprofd=host}
 
 %ninja_build -C build
 
@@ -185,8 +185,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/sysprof-6.pc
 %{_pkgconfigdir}/sysprof-capture-4.pc
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof.Agent.xml
+%if %{with sysprofd}
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof3.Profiler.xml
 %{_datadir}/dbus-1/interfaces/org.gnome.Sysprof3.Service.xml
+%endif
 
 %files ui -f %{name}-ui.lang
 %defattr(644,root,root,755)
