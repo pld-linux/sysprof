@@ -6,27 +6,27 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	46.0
+Version:	47.0
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	https://download.gnome.org/sources/sysprof/46/%{name}-%{version}.tar.xz
-# Source0-md5:	89d564d00783585922a04c17c60f3794
+Source0:	https://download.gnome.org/sources/sysprof/47/%{name}-%{version}.tar.xz
+# Source0-md5:	511988f4d01e77e1d278cb0cfdb6480f
 Patch0:		no-cache-update.patch
 URL:		http://www.sysprof.com/
 BuildRequires:	cairo-devel
 # -std=gnu17
 BuildRequires:	gcc >= 6:7
 BuildRequires:	gettext-tools >= 0.19.6
-BuildRequires:	glib2-devel >= 1:2.76.0
-BuildRequires:	gtk4-devel >= 4.10
+BuildRequires:	glib2-devel >= 1:2.80.0
+BuildRequires:	gtk4-devel >= 4.15
 BuildRequires:	json-glib-devel
 BuildRequires:	libadwaita-devel >= 1.2
-BuildRequires:	libdex-devel >= 0.3
+BuildRequires:	libdex-devel >= 0.6
 BuildRequires:	libpanel-devel >= 1.3.0
 BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	libunwind-devel
-BuildRequires:	meson >= 0.62.0
+BuildRequires:	meson >= 1.0.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.22
@@ -62,8 +62,8 @@ Wystarczy załadować moduł jądra i uruchomić sysprof.
 Summary:	The sysprof profiler library
 Summary(pl.UTF-8):	Biblioteka profilera sysprof
 Group:		Libraries
-Requires:	glib2 >= 1:2.76.0
-Requires:	libdex >= 0.3
+Requires:	glib2 >= 1:2.80.0
+Requires:	libdex >= 0.6
 Obsoletes:	sysprof-ui-libs < 45
 
 %description libs
@@ -77,9 +77,9 @@ Summary:	Header files for sysprof library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki sysprof
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.76.0
+Requires:	glib2-devel >= 1:2.80.0
 Requires:	json-glib-devel
-Requires:	libdex-devel >= 0.3
+Requires:	libdex-devel >= 0.6
 %{?with_sysprofd:Requires:	polkit-devel >= 0.114}
 %{?with_sysprofd:Requires:	systemd-devel >= 1:222}
 Obsoletes:	sysprof-static < 3.28.0
@@ -96,10 +96,10 @@ Summary:	The sysprof graphical user interface
 Summary(pl.UTF-8):	Graficzny interfejs użytkownika profilera sysprof
 Group:		Applications/System
 Requires(post,postun):	desktop-file-utils
-Requires(post,postun):	glib2 >= 1:2.76.0
+Requires(post,postun):	glib2 >= 1:2.80.0
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name} = %{version}-%{release}
-Requires:	gtk4 >= 4.10
+Requires:	gtk4 >= 4.15
 Requires:	hicolor-icon-theme
 Requires:	libpanel >= 1.3.0
 Requires:	shared-mime-info
@@ -158,7 +158,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS DESIGN.md NEWS README.md
+%doc AUTHORS NEWS README.md
 %attr(755,root,root) %{_bindir}/sysprof-agent
 %attr(755,root,root) %{_bindir}/sysprof-cli
 %if %{with sysprofd}
