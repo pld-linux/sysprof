@@ -1,28 +1,30 @@
 # TODO: switch to gtk4-update-icon-cache
 #
 # Conditional build:
+%bcond_without	debuginfod	# debuginfod integration
 %bcond_without	sysprofd	# daemon to run UI without root permissions
 #
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	47.2
+Version:	48.0
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	https://download.gnome.org/sources/sysprof/47/%{name}-%{version}.tar.xz
-# Source0-md5:	3ae0f1ed4aca2e94338355e531a3fd1e
+Source0:	https://download.gnome.org/sources/sysprof/48/%{name}-%{version}.tar.xz
+# Source0-md5:	be477e0464082668075f2bb49df9616f
 Patch0:		no-cache-update.patch
-URL:		http://www.sysprof.com/
+URL:		https://www.sysprof.com/
 BuildRequires:	cairo-devel
 # -std=gnu17
 BuildRequires:	gcc >= 6:7
 BuildRequires:	gettext-tools >= 0.19.6
 BuildRequires:	glib2-devel >= 1:2.80.0
 BuildRequires:	gtk4-devel >= 4.15
+%{?with_debuginfod:BuildRequires:	elfutils-debuginfod-devel}
 BuildRequires:	json-glib-devel
 BuildRequires:	libadwaita-devel >= 1.2
-BuildRequires:	libdex-devel >= 0.6
+BuildRequires:	libdex-devel >= 0.9
 BuildRequires:	libpanel-devel >= 1.3.0
 BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	libunwind-devel
@@ -31,7 +33,7 @@ BuildRequires:	ninja >= 1.5
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.22
 BuildRequires:	polkit-devel >= 0.114
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.042
 %{?with_sysprofd:BuildRequires:	systemd-devel >= 1:222}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
@@ -63,7 +65,7 @@ Summary:	The sysprof profiler library
 Summary(pl.UTF-8):	Biblioteka profilera sysprof
 Group:		Libraries
 Requires:	glib2 >= 1:2.80.0
-Requires:	libdex >= 0.6
+Requires:	libdex >= 0.9
 Obsoletes:	sysprof-ui-libs < 45
 
 %description libs
@@ -79,7 +81,7 @@ Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2-devel >= 1:2.80.0
 Requires:	json-glib-devel
-Requires:	libdex-devel >= 0.6
+Requires:	libdex-devel >= 0.9
 %{?with_sysprofd:Requires:	polkit-devel >= 0.114}
 %{?with_sysprofd:Requires:	systemd-devel >= 1:222}
 Obsoletes:	sysprof-static < 3.28.0
@@ -115,16 +117,18 @@ Graficzny interfejs użytkownika profilera sysprof.
 %patch -P0 -p1
 
 %build
-%meson build \
+%meson \
 	--default-library=shared \
+	-Ddebuginfod=%{__enabled_disabled debuginfod} \
+	-Dpolkit-agent=enabled \
 	%{!?with_sysprofd:-Dsysprofd=host}
 
-%ninja_build -C build
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 %find_lang %{name} -o %{name}-ui.lang --with-gnome --without-mo
 %find_lang %{name}
@@ -160,8 +164,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README.md
 %attr(755,root,root) %{_bindir}/sysprof-agent
+%attr(755,root,root) %{_bindir}/sysprof-cat
 %attr(755,root,root) %{_bindir}/sysprof-cli
 %if %{with sysprofd}
+%attr(755,root,root) %{_libexecdir}/sysprof-live-unwinder
 %attr(755,root,root) %{_libexecdir}/sysprofd
 %{systemdunitdir}/sysprof3.service
 %{_datadir}/dbus-1/system-services/org.gnome.Sysprof3.service
