@@ -7,12 +7,12 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	48.0
+Version:	48.1
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
 Source0:	https://download.gnome.org/sources/sysprof/48/%{name}-%{version}.tar.xz
-# Source0-md5:	be477e0464082668075f2bb49df9616f
+# Source0-md5:	18095080186a821ac80ecebff5ab94b4
 Patch0:		no-cache-update.patch
 URL:		https://www.sysprof.com/
 BuildRequires:	cairo-devel
