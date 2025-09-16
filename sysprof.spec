@@ -7,12 +7,12 @@
 Summary:	Sampling CPU profiler for Linux
 Summary(pl.UTF-8):	Próbkujący profiler procesora dla Linuksa
 Name:		sysprof
-Version:	48.1
+Version:	49.0
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
-Source0:	https://download.gnome.org/sources/sysprof/48/%{name}-%{version}.tar.xz
-# Source0-md5:	18095080186a821ac80ecebff5ab94b4
+Source0:	https://download.gnome.org/sources/sysprof/49/%{name}-%{version}.tar.xz
+# Source0-md5:	9bd4f8e920978d98db41cc1427479d5c
 Patch0:		no-cache-update.patch
 URL:		https://www.sysprof.com/
 BuildRequires:	cairo-devel
@@ -23,9 +23,9 @@ BuildRequires:	glib2-devel >= 1:2.80.0
 BuildRequires:	gtk4-devel >= 4.15
 %{?with_debuginfod:BuildRequires:	elfutils-debuginfod-devel}
 BuildRequires:	json-glib-devel
-BuildRequires:	libadwaita-devel >= 1.2
+BuildRequires:	libadwaita-devel >= 1.6.0
 BuildRequires:	libdex-devel >= 0.9
-BuildRequires:	libpanel-devel >= 1.3.0
+BuildRequires:	libpanel-devel >= 1.4
 BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	libunwind-devel
 BuildRequires:	meson >= 1.0.0
@@ -103,7 +103,8 @@ Requires(post,postun):	gtk-update-icon-cache
 Requires:	%{name} = %{version}-%{release}
 Requires:	gtk4 >= 4.15
 Requires:	hicolor-icon-theme
-Requires:	libpanel >= 1.3.0
+Requires:	libadwaita >= 1.6.0
+Requires:	libpanel >= 1.4
 Requires:	shared-mime-info
 
 %description ui
@@ -199,7 +200,8 @@ rm -rf $RPM_BUILD_ROOT
 %files ui -f %{name}-ui.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/sysprof
-%{_datadir}/metainfo/org.gnome.Sysprof.appdata.xml
+%{_datadir}/dbus-1/services/org.gnome.Sysprof.service
+%{_datadir}/metainfo/org.gnome.Sysprof.metainfo.xml
 %{_datadir}/mime/packages/sysprof-mime.xml
 %{_desktopdir}/org.gnome.Sysprof.desktop
 %{_iconsdir}/hicolor/scalable/actions/sysprof-*.svg
